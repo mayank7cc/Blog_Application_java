@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title> Blogs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --gradient-hero: linear-gradient(135deg, #161a2d 0%, #202a44 40%, #5b3dee 100%);
+            --accent: #6d63ff;
+            --accent-light: #837dff;
+        }
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #0e101a;
+            color: #e5e7ff;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        /* Hero */
+        .hero {
+            background: var(--gradient-hero);
+            height: 330px;
+            border-radius: 0 0 45px 45px;
+            padding: 95px 0;
+            color: white;
+            box-shadow: 0 25px 60px rgba(0,0,0,.35);
+            animation: fadeDown .7s ease;
+        }
+        .hero h1 { font-weight: 700; font-size: 50px; letter-spacing: .7px; }
+        .hero p { font-size: 18px; opacity: .88; }
+
+        /* Button — Create */
+        .create-btn {
+           margin-top: -42px;
+           margin-bottom: 50px;
+           position: relative;
+            z-index: 5;
+            }
+    .create-btn a {
+    padding: 16px 44px;
+    border-radius: 14px;
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 8px 25px rgba(109, 99, 255, .45); /* reduced & behind */
+    text-decoration: none;
+    transition: .35s;
+    position: relative;
+    z-index: 10;
+     }
+    .create-btn a:hover {
+    transform: translateY(-5px) scale(1.03);
+    background: var(--accent-light);}
+
+        /* Glassmorphic post card */
+        .post-card {
+            border-radius: 22px;
+            padding: 32px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,.15);
+            backdrop-filter: blur(12px);
+            transition: .45s cubic-bezier(.2,.55,.32,1.2);
+            cursor: pointer;
+            height: 100%;
+        }
+        .post-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 55px rgba(0,0,0,.35);
+        }
+        .post-card h4 { font-size: 22px; font-weight: 600; margin-bottom: 6px; color: #fff; }
+        .post-card small { color: #c4c7ff; font-size: 14px; font-weight: 500; }
+        .post-card p { margin-top: 16px; line-height: 1.62; font-size: 15px; color: #e1e2ff; }
+
+        /* Manage Edit/Delete */
+    .manage input {
+    border-radius: 12px;
+    border: none;
+    padding: 15px;
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+    backdrop-filter: blur(8px);
+}
+.manage input::placeholder {
+    color: #c9cbff; /* visible pastel placeholder */
+    opacity: 0.85;
+        }
+        .manage .btn { padding: 15px 22px; border-radius: 12px; font-weight: 600; }
+        .btn-dark {
+            background: var(--accent) !important;
+            border: none;
+            transition: .3s;
+        }
+        .btn-dark:hover { background: var(--accent-light) !important; transform: translateY(-3px); }
+        .btn-outline-danger {
+            border: 2px solid #ff3b4e !important;
+            color: #ff3b4e !important;
+        }
+        .btn-outline-danger:hover {
+            background: #ff3b4e !important;
+            color: white !important;
+            transform: translateY(-3px);
+        }
+
+        /* Post Info Box */
+        .info-box {
+            margin: 45px auto 0;
+            max-width: 650px;
+            border-radius: 18px;
+            padding: 35px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,.15);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 18px 45px rgba(0,0,0,.38);
+            animation: fadeUp .6s ease;
+        }
+        .info-box input, .info-box textarea {
+            border-radius: 12px;
+            border: none;
+            padding: 14px;
+            margin-bottom: 12px;
+            background: rgba(255,255,255,.12);
+            color: white;
+        }
+
+        /* Premium Table */
+        .premium-table {
+            border-radius: 16px;
+            overflow: hidden;
+            margin: auto;
+            max-width: 1200px;
+            box-shadow: 0 18px 55px rgba(0,0,0,.45);
+        }
+        .premium-table thead { background: #111626; color: white; }
+        .premium-table th { padding: 18px; }
+        .premium-table td {
+            padding: 18px;
+            background: rgba(255,255,255,.05);
+            color: #d7d8ff;
+        }
+        .premium-table tbody tr:hover td {
+            background: rgba(255,255,255,.14) !important;
+            transition: .25s;
+        }
+
+        /* Animations */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: none; } }
+        @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px);} to { opacity: 1; transform: none; } }
+
+        footer { margin-top: 100px; color: #8387b9; padding-bottom: 50px; font-size: 15px; }
+    </style>
+</head>
+
+<body>
+
+<div class="hero">
+    <h1>Kurzo Blogs</h1>
+    <p>Explore, read and manage posts with a clean and modern experience.</p>
+</div>
+
+<div class="d-flex justify-content-center create-btn">
+    <a href="/new">Create New Post</a>
+</div>
+
+<div class="container" style="max-width: 1250px;">
+    <div class="row g-4 justify-content-center">
+        <div class="col-lg-4 col-md-6" th:each="post : ${listPosts}">
+            <div class="post-card">
+                <h4 th:text="${post.title}"></h4>
+                <small th:text="${post.author}"></small>
+                <p th:text="${post.content}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="manage row g-3 justify-content-center mt-5">
+        <div class="col-md-3">
+            <input type="number" id="postIdInput" class="form-control" placeholder="Post ID">
+        </div>
+        <div class="col-md-2">
+            <button onclick="editPost()" class="btn btn-dark w-100">Edit</button>
+        </div>
+        <div class="col-md-2">
+            <button onclick="deletePost()" class="btn btn-outline-danger w-100">Delete</button>
+        </div>
+    </div>
+
+    <div id="postInfoBox" class="info-box" th:if="${selectedPost}">
+        <label>Title</label>
+        <input type="text" th:value="${selectedPost.title}" readonly>
+        <label>Author</label>
+        <input type="text" th:value="${selectedPost.author}" readonly>
+        <label>Content</label>
+        <textarea rows="5" readonly th:text="${selectedPost.content}"></textarea>
+    </div>
+</div>
+
+<div class="table-responsive mt-5 d-flex justify-content-center">
+    <table class="table align-middle premium-table">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Content</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${listPosts}">
+            <td th:text="${p.title}"></td>
+            <td th:text="${p.author}"></td>
+            <td th:text="${p.content}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer class="text-center">
+    © <span id="year"></span> Blog Platform
+</footer>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    function editPost() {
+        const id = document.getElementById("postIdInput").value;
+        if (!id) return alert("Enter a Post ID");
+        window.location.href = "/edit/" + id;
+    }
+    function deletePost() {
+        const id = document.getElementById("postIdInput").value;
+        if (!id) return alert("Enter a Post ID");
+        if (confirm(`Delete post ID ${id}?`)) window.location.href = "/delete/" + id;
+    }
+</script>
+
+</body>
+</html>
